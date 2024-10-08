@@ -1,4 +1,4 @@
-package com.eunsun.mssproductapi.common;
+package com.eunsun.mssproductapi.common.util;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;

@@ -1,6 +1,6 @@
-package com.eunsun.mssproductapi.domain.brand.entity;
+package com.eunsun.mssproductapi.category.entity;
 
-import com.eunsun.mssproductapi.common.BaseTime;
+import com.eunsun.mssproductapi.common.util.BaseTime;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,16 +8,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "BRAND")
+@Table(name = "CATEGORY")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Builder
-public class Brand extends BaseTime {
+public class Category extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "brand_nm", nullable = false)
-    private String brandNm;
+    @Column(name = "category_nm", nullable = false)
+    private String categoryNm;
 }
