@@ -21,11 +21,25 @@ public class Brand extends BaseTime {
     @Column(name = "brand_nm", nullable = false)
     private String brandNm;
 
-    public void updateBrandNm(String newBrandNm) {
-        this.brandNm = newBrandNm;
+    @Column(name = "del_yn", nullable = false)
+    private Boolean delYn = false;
+
+    @PrePersist
+    public void prePersist() {
+        if (this.delYn == null) {
+            this.delYn = false;
+        }
     }
 
     public boolean isSameName(String newBrandNm) {
         return this.brandNm.equals(newBrandNm);
+    }
+
+    public void update(String newBrandNm) {
+        this.brandNm = newBrandNm;
+    }
+
+    public void delete() {
+        this.delYn = true;
     }
 }

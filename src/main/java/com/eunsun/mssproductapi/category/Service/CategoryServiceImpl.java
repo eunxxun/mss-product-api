@@ -15,6 +15,11 @@ public class CategoryServiceImpl implements CategoryService{
     @Override
     public Category findCategoryById(Long id) {
         return categoryRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(ExceptionMessage.NOT_EXISTS_CTG_ID));
+                () -> new EntityNotFoundException(ExceptionMessage.NOT_FOUND_CATEGORY));
+    }
+
+    @Override
+    public Boolean existsByCategoryNm(String categoryNm) {
+        return categoryRepository.existsByCategoryNm(categoryNm);
     }
 }

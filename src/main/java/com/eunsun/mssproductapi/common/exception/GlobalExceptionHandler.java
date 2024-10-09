@@ -17,4 +17,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleDuplicationException(DuplicationException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
     }
+
+    @ExceptionHandler(LowestPriceBrandNotFoundException.class)
+    public ResponseEntity<String> handleLowestPriceBrandNotFoundException(LowestPriceBrandNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    }
 }

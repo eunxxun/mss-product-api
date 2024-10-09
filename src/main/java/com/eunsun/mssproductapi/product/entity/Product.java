@@ -37,12 +37,12 @@ public class Product extends BaseTime {
     private BigDecimal price;
 
     @Column(name = "del_yn", nullable = false, length = 10)
-    private String delYn = "N";
+    private Boolean delYn = false;
 
     @PrePersist
     public void prePersist() {
         if (this.delYn == null) {
-            this.delYn = "N";
+            this.delYn = false;
         }
     }
 
@@ -51,6 +51,10 @@ public class Product extends BaseTime {
         this.category = category;
         this.productName = productName;
         this.price = price;
+    }
+
+    public void delete() {
+        this.delYn = true;
     }
 
 }

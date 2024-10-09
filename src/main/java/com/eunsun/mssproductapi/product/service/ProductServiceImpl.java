@@ -21,6 +21,11 @@ public class ProductServiceImpl implements ProductService {
     private final BrandService brandService;
     private final CategoryService categoryService;
 
+    /**
+     * 상품 생성
+     * @param productRequest 신규 상품 정보
+     * @return ProductResponse
+     */
     @Override
     public ProductResponse create(ProductRequest productRequest) {
         Brand brand = brandService.findById(productRequest.brandId());
@@ -30,6 +35,12 @@ public class ProductServiceImpl implements ProductService {
         return ProductMapper.toResponse(product);
     }
 
+    /**
+     * 상품 정보 수정
+     * @param id 상품ID
+     * @param productRequest 수정 상품 정보
+     * @return ProductResponse
+     */
     @Override
     public ProductResponse update(Long id, ProductRequest productRequest) {
         Product product = findById(id);
@@ -42,15 +53,21 @@ public class ProductServiceImpl implements ProductService {
         return ProductMapper.toResponse(product);
     }
 
+    /**
+     * 상품 삭제
+     * @param id 상품ID
+     */
     @Override
     public void delete(Long id) {
         Product product = findById(id);
-        productRepository.delete(product);
+
+        product.delete();
+        productRepository.save(product);
     }
 
     private Product findById(Long id) {
         return productRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(ExceptionMessage.NOT_EXISTS_PRD_ID));
+                () -> new EntityNotFoundException(ExceptionMessage.NOT_FOUND_PRODUCT));
     }
 
 }
