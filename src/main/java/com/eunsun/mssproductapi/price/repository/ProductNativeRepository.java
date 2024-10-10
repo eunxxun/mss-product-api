@@ -8,9 +8,11 @@ import com.eunsun.mssproductapi.product.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface ProductNativeRepository extends JpaRepository<Product, Long> {
     @Query(value = "SELECT category_nm as categoryNm, brand_nm as brandNm, price FROM " +
             "(SELECT c.category_nm, b.brand_nm, p.price, " +

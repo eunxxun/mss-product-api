@@ -8,6 +8,7 @@ import com.eunsun.mssproductapi.brand.repository.BrandRepository;
 import com.eunsun.mssproductapi.common.exception.ExceptionMessage;
 import com.eunsun.mssproductapi.common.exception.DuplicationException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -49,10 +50,10 @@ public class BrandServiceImpl implements BrandService {
      * @param id 브랜드ID
      */
     @Override
+    @Transactional
     public void delete(Long id) {
         Brand brand = findById(id);
-        brand.delete();
-        brandRepository.save(brand);
+        brandRepository.delete(brand);
     }
 
     /**

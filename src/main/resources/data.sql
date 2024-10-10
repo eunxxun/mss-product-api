@@ -24,6 +24,7 @@ CREATE TABLE BRAND
 );
 
 CREATE UNIQUE INDEX idx_brand_nm ON BRAND (brand_nm);
+CREATE INDEX idx_brand_del_yn ON BRAND (del_yn);
 
 -- PRODUCT 테이블
 CREATE TABLE PRODUCT
@@ -47,7 +48,6 @@ CREATE INDEX idx_product_del_yn ON PRODUCT (del_yn);
 
 --카테고리별 최저가 상품 조회를 위해 인덱스 추가
 CREATE INDEX idx_product_category_price_delyn ON PRODUCT (category_id, price, del_yn);
-
 CREATE INDEX idx_product_brand_category_price ON PRODUCT (brand_id, category_id, price);
 
 -- CATEGORY 데이터 추가
