@@ -10,9 +10,13 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
+
+    @Query("SELECT distinct p FROM Product p JOIN FETCH p.brand JOIN FETCH p.category WHERE p.id = :id")
+    Optional<Product> findWithBrandAndCategoryById(Long id);
 
     @Modifying
     @Query("UPDATE Product p SET p.delYn = true WHERE p.brand.id = :brandId")

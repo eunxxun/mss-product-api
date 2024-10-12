@@ -29,8 +29,29 @@ User Name : sa
 - http://localhost:8080/swagger-ui/index.html/
 
 ## DB 구성
+
 - H2를 사용한 메모리 DB로 설정
 - 데이터베이스 Schema 및 Data 초기 설정을 위해 data.sql 작성
+
+---
+
+## 문제 해결 전략
+
+- Soft Delete
+  - 물리적으로 데이터를 삭제하는 대신 삭제 여부를 사용하여 논리적으로 삭제되었음을 표시합니다.
+  - Soft Delete는 데이터 복구가 가능하고 히스토리 추적이 가능합니다. 
+  - 물리적으로 삭제하지 않기 때문에 데이터베이스의 저장 공간이 불필요하게 증가 할 수 있기 떄문에 일정 기간이 지난 삭제 데이터를 별도 테이블로 옮겨 최적화 작업을 하여 해결할 수 있습니다.
+  - AOP를 사용하여 브랜드가 삭제될 때 관련 상품들도 자동으로 삭제될 수 있게 처리하고 서비스 로직과 해당 로직을 분리했습니다.
+- N+1 문제 해결
+  - 지연 로딩(Lazy Loading)으로 설정된 경우, 각 Product에 대해 Brand와 Category를 조회하는 추가적인 쿼리가 발생하여 N+1 문제가 생길 수 있습니다.
+  - N+1 문제를 해결하기 위해 **fetch join**을 사용하였습니다.
+    - Brand와 Category는 Product와의 관계에서 반드시 존재하는 엔티티기 떄문에 fetch join을 선택했습니다.
+    - fetch join과 함께 distinct를 사용하여 중복 없이 연관된 필수 엔티티들을 효과적으로 조회할 수 있도록 했습니다.
+- 대량의 상품 데이터에 대비한 조회 성능 개선
+  - 대량의 상품 데이터를 처리하는 환경에서 조회 성능을 향상 시키기 위해 Redis를 사용했습니다.
+    - 로컬캐시가 아닌 글로벌캐시를 사용한 이유는 분산 환경에 대비하기 위해서 입니다.
+  - 가격 조회 API 호출시 캐시를 적용하고 상품 생성,수정,삭제시에 캐시를 무효화하여 최신데이터를 유지했습니다.
+  - CacheLoggingAspect를 추가하여 캐시가 추가되고 무효화되는 상태를 로깅했습니다.
 
 ## 구현 설명
 ### 1. **GET /api/v1/prices/categories/lowest**
@@ -188,8 +209,8 @@ User Name : sa
   {
     "id": 74,
     "brandNm": "스탠다드",
-    "CategoryNm": "상의",
-    "ProductNm": "스트라이프 티셔츠",
+    "categoryNm": "상의",
+    "productNm": "스트라이프 티셔츠",
     "price": 50000
   }
   ```
@@ -217,8 +238,8 @@ User Name : sa
   {
     "id": 74,
     "brandNm": "스탠다드",
-    "CategoryNm": "상의",
-    "ProductNm": "스트라이프 셔츠",
+    "categoryNm": "상의",
+    "productNm": "스트라이프 셔츠",
     "price": 70000
   }
   ```
@@ -237,6 +258,3 @@ User Name : sa
 
 ## Error Handling
 
----
-
-## 문제 해결 전략

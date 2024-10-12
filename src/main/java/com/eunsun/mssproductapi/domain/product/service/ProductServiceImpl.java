@@ -1,22 +1,22 @@
 package com.eunsun.mssproductapi.domain.product.service;
 
-import com.eunsun.mssproductapi.common.exception.DuplicationException;
-import com.eunsun.mssproductapi.domain.brand.entity.Brand;
-import com.eunsun.mssproductapi.domain.brand.service.BrandService;
-import com.eunsun.mssproductapi.domain.category.service.CategoryService;
-import com.eunsun.mssproductapi.domain.category.entity.Category;
-import com.eunsun.mssproductapi.common.exception.ExceptionMessage;
 import com.eunsun.mssproductapi.api.v1.product.dto.ProductRequest;
 import com.eunsun.mssproductapi.api.v1.product.dto.ProductResponse;
-import com.eunsun.mssproductapi.domain.product.repository.ProductRepository;
+import com.eunsun.mssproductapi.common.exception.DuplicationException;
+import com.eunsun.mssproductapi.common.exception.ExceptionMessage;
+import com.eunsun.mssproductapi.domain.brand.entity.Brand;
+import com.eunsun.mssproductapi.domain.brand.service.BrandService;
+import com.eunsun.mssproductapi.domain.category.entity.Category;
+import com.eunsun.mssproductapi.domain.category.service.CategoryService;
 import com.eunsun.mssproductapi.domain.product.entity.Product;
 import com.eunsun.mssproductapi.domain.product.mapper.ProductMapper;
+import com.eunsun.mssproductapi.domain.product.repository.ProductRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Caching;
-import org.springframework.transaction.annotation.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -62,10 +62,10 @@ public class ProductServiceImpl implements ProductService {
             @CacheEvict(value = "categoryRangePrices", key = "#productRequest.categoryId()")
     })
     public ProductResponse update(Long id, ProductRequest productRequest) {
-        Product product = findById(id);
+        Product product = findWithBrandAndCategoryById(id);
 
-        Brand brand = brandService.findById(productRequest.brandId());
-        Category category = categoryService.findCategoryById(productRequest.categoryId());
+        Brand brand = product.getBrand();
+        Category category = product.getCategory();
 
         if (isExistEqualProduct(brand, category, productRequest)) {
             throw new DuplicationException(ExceptionMessage.EXISTS_PRODUCT);
@@ -99,6 +99,11 @@ public class ProductServiceImpl implements ProductService {
 
     private Product findById(Long id) {
         return productRepository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException(ExceptionMessage.NOT_FOUND_PRODUCT));
+    }
+
+    private Product findWithBrandAndCategoryById(Long id) {
+        return productRepository.findWithBrandAndCategoryById(id).orElseThrow(
                 () -> new EntityNotFoundException(ExceptionMessage.NOT_FOUND_PRODUCT));
     }
 

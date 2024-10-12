@@ -6,7 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 @Entity
 @Table(name = "BRAND")
@@ -14,7 +15,8 @@ import org.hibernate.annotations.SoftDelete;
 @AllArgsConstructor
 @Getter
 @Builder
-@SoftDelete(columnName = "del_yn")
+@SQLRestriction("del_yn = false")
+@SQLDelete(sql = "UPDATE brand SET del_yn = true, updated_at = CURRENT_DATE where id = ?")
 public class Brand extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,8 +25,15 @@ public class Brand extends BaseTime {
     @Column(name = "brand_nm", nullable = false)
     private String brandNm;
 
-    @Column(name = "del_yn", insertable = false, updatable = false)
+    @Column(name = "del_yn", nullable = false)
     private Boolean delYn = false;
+
+    @PrePersist
+    public void prePersist() {
+        if (this.delYn == null) {
+            this.delYn = false;
+        }
+    }
 
     public boolean isSameName(String newBrandNm) {
         return this.brandNm.equals(newBrandNm);

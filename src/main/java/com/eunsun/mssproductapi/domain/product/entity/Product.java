@@ -8,7 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.SoftDelete;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.math.BigDecimal;
 
@@ -18,17 +19,18 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Getter
 @Builder
-@SoftDelete(columnName = "del_yn")
+@SQLRestriction("del_yn = false")
+@SQLDelete(sql = "UPDATE product SET del_yn = true, updated_at = CURRENT_DATE where id = ?")
 public class Product extends BaseTime {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "brand_id", nullable = false)
     private Brand brand;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
@@ -38,8 +40,15 @@ public class Product extends BaseTime {
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
 
-    @Column(name = "del_yn", insertable = false, updatable = false)
+    @Column(name = "del_yn", nullable = false)
     private Boolean delYn = false;
+
+    @PrePersist
+    public void prePersist() {
+        if (this.delYn == null) {
+            this.delYn = false;
+        }
+    }
 
     public void update(Brand brand, Category category, String productName, BigDecimal price) {
         this.brand = brand;

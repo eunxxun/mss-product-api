@@ -68,7 +68,7 @@ class ProductServiceTest {
 
         // then
         assertNotNull(productResponse);
-        assertEquals("신규상품", productResponse.ProductNm());
+        assertEquals("신규상품", productResponse.productNm());
         verify(productRepository, times(1)).save(any(Product.class));
     }
 
@@ -106,7 +106,7 @@ class ProductServiceTest {
 
         // then
         assertNotNull(productResponse);
-        assertEquals("수정상품", productResponse.ProductNm());
+        assertEquals("수정상품", productResponse.productNm());
         verify(productRepository, times(1)).save(product);
     }
 
