@@ -44,11 +44,11 @@ public class PriceServiceImpl implements PriceService{
     @Override
     @Cacheable(value = "brandLowestPrices", key = "'brdLowestKey'")
     public LowestPriceBrandResponse getBrandLowestPrices() {
-        LowestPriceBrand lowestPriceBrand = productRepository.findLowestPriceBrandWithTotal()
+        LowestPriceBrandInterface lowestPriceBrandInterface = productRepository.findLowestPriceBrandWithTotal()
                 .orElseThrow(() -> new LowestPriceBrandNotFoundException(ExceptionMessage.NOT_FOUND_LOWEST_BRAND));
 
-        List<CategoryPrice> categoryPrices = productRepository.findCategoryMinPricesByBrand(lowestPriceBrand.getBrandId());
-        return new LowestPriceBrandResponse(lowestPriceBrand.getBrandNm(), categoryPrices, lowestPriceBrand.getTotalPrice());
+        List<CategoryPrice> categoryPrices = productRepository.findCategoryMinPricesByBrand(lowestPriceBrandInterface.getBrandId());
+        return new LowestPriceBrandResponse(lowestPriceBrandInterface.getBrandNm(), categoryPrices, lowestPriceBrandInterface.getTotalPrice());
     }
 
     /**

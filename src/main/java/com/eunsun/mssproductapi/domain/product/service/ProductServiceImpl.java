@@ -1,5 +1,6 @@
 package com.eunsun.mssproductapi.domain.product.service;
 
+import com.eunsun.mssproductapi.common.exception.DuplicationException;
 import com.eunsun.mssproductapi.domain.brand.entity.Brand;
 import com.eunsun.mssproductapi.domain.brand.service.BrandService;
 import com.eunsun.mssproductapi.domain.category.service.CategoryService;
@@ -40,6 +41,9 @@ public class ProductServiceImpl implements ProductService {
         Brand brand = brandService.findById(productRequest.brandId());
         Category category = categoryService.findCategoryById(productRequest.categoryId());
 
+        if (isExistEqualProduct(brand, category, productRequest)) {
+            throw new DuplicationException(ExceptionMessage.EXISTS_PRODUCT);
+        }
         Product product = productRepository.save(ProductMapper.toEntity(productRequest, brand, category));
         return ProductMapper.toResponse(product);
     }
@@ -62,6 +66,10 @@ public class ProductServiceImpl implements ProductService {
 
         Brand brand = brandService.findById(productRequest.brandId());
         Category category = categoryService.findCategoryById(productRequest.categoryId());
+
+        if (isExistEqualProduct(brand, category, productRequest)) {
+            throw new DuplicationException(ExceptionMessage.EXISTS_PRODUCT);
+        }
 
         product.update(brand, category, productRequest.productNm(), productRequest.price());
         productRepository.save(product);
@@ -92,6 +100,10 @@ public class ProductServiceImpl implements ProductService {
     private Product findById(Long id) {
         return productRepository.findById(id).orElseThrow(
                 () -> new EntityNotFoundException(ExceptionMessage.NOT_FOUND_PRODUCT));
+    }
+
+    private boolean isExistEqualProduct(Brand brand, Category category, ProductRequest request) {
+        return productRepository.existsByBrandAndCategoryAndProductNmAndPrice(brand, category, request.productNm(), request.price());
     }
 
 }

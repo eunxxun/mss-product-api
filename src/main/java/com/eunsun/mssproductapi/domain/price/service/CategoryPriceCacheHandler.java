@@ -6,7 +6,6 @@ import com.eunsun.mssproductapi.api.v1.price.dto.CategoryPriceRangeResponse;
 import com.eunsun.mssproductapi.domain.category.entity.Category;
 import com.eunsun.mssproductapi.domain.price.repository.ProductNativeRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 

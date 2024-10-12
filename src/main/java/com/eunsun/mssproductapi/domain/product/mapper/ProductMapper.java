@@ -11,13 +11,13 @@ public class ProductMapper {
         return Product.builder()
                 .brand(brand)
                 .category(category)
-                .productName(productRequest.productNm())
+                .productNm(productRequest.productNm())
                 .price(productRequest.price())
                 .build();
     }
 
     public static ProductResponse toResponse(Product product) {
-        return new ProductResponse(product.getId(), product.getBrand().getBrandNm(), product.getCategory().getCategoryNm(), product.getProductName(), product.getPrice());
+        return new ProductResponse(product.getId(), product.getBrand().getBrandNm(), product.getCategory().getCategoryNm(), product.getProductNm(), product.getPrice());
     }
 
 }

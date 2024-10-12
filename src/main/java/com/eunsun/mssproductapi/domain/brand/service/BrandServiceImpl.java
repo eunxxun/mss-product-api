@@ -25,6 +25,7 @@ public class BrandServiceImpl implements BrandService {
     @Override
     @Transactional
     public BrandResponse create(BrandRequest brandRequest) {
+        validateUniqueBrandNm(brandRequest.brandNm());
         Brand brand = brandRepository.save(BrandMapper.toEntity(brandRequest));
         return BrandMapper.toResponse(brand);
     }

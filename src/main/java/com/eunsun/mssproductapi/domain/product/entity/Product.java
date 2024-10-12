@@ -32,8 +32,8 @@ public class Product extends BaseTime {
     @JoinColumn(name = "category_id", nullable = false)
     private Category category;
 
-    @Column(name = "product_nm", nullable = false, length = 255)
-    private String productName;
+    @Column(name = "product_nm", nullable = false)
+    private String productNm;
 
     @Column(name = "price", nullable = false, precision = 10, scale = 2)
     private BigDecimal price;
@@ -44,7 +44,7 @@ public class Product extends BaseTime {
     public void update(Brand brand, Category category, String productName, BigDecimal price) {
         this.brand = brand;
         this.category = category;
-        this.productName = productName;
+        this.productNm = productName;
         this.price = price;
     }
 

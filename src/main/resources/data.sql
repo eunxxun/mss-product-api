@@ -6,7 +6,7 @@ DROP TABLE IF EXISTS PRODUCT;
 CREATE TABLE CATEGORY
 (
     id          INT AUTO_INCREMENT PRIMARY KEY,
-    category_nm VARCHAR(255) NOT NULL UNIQUE COMMENT '카테고리명',
+    category_nm VARCHAR(100) NOT NULL UNIQUE COMMENT '카테고리명',
     created_at  DATETIME     NOT NULL,
     updated_at  DATETIME     NOT NULL
 );
@@ -17,7 +17,7 @@ CREATE UNIQUE INDEX idx_category_nm ON CATEGORY (category_nm);
 CREATE TABLE BRAND
 (
     id         INT AUTO_INCREMENT PRIMARY KEY,
-    brand_nm   VARCHAR(255) NOT NULL UNIQUE COMMENT '브랜드명',
+    brand_nm   VARCHAR(100) NOT NULL UNIQUE COMMENT '브랜드명',
     del_yn     BOOLEAN      NOT NULL COMMENT '삭제여부',
     created_at DATETIME     NOT NULL,
     updated_at DATETIME     NOT NULL

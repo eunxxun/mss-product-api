@@ -2,7 +2,7 @@ package com.eunsun.mssproductapi.domain.price.repository;
 
 import com.eunsun.mssproductapi.api.v1.price.dto.BrandPriceRange;
 import com.eunsun.mssproductapi.api.v1.price.dto.CategoryPrice;
-import com.eunsun.mssproductapi.api.v1.price.dto.LowestPriceBrand;
+import com.eunsun.mssproductapi.api.v1.price.dto.LowestPriceBrandInterface;
 import com.eunsun.mssproductapi.api.v1.price.dto.LowestPriceCategoryInterface;
 import com.eunsun.mssproductapi.domain.product.entity.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -39,7 +39,7 @@ public interface ProductNativeRepository extends JpaRepository<Product, Long> {
             "ORDER BY totalPrice ASC " +
             "LIMIT 1",
             nativeQuery = true)
-    Optional<LowestPriceBrand> findLowestPriceBrandWithTotal();
+    Optional<LowestPriceBrandInterface> findLowestPriceBrandWithTotal();
 
     @Query("SELECT new com.eunsun.mssproductapi.api.v1.price.dto.CategoryPrice(c.categoryNm, MIN(p.price)) " +
             "FROM Product p " +
