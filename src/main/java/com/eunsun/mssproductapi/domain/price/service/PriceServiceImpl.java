@@ -1,7 +1,7 @@
 package com.eunsun.mssproductapi.domain.price.service;
 
 import com.eunsun.mssproductapi.api.v1.price.dto.*;
-import com.eunsun.mssproductapi.common.exception.ExceptionMessage;
+import com.eunsun.mssproductapi.common.exception.ErrorMessages;
 import com.eunsun.mssproductapi.common.exception.LowestPriceBrandNotFoundException;
 import com.eunsun.mssproductapi.domain.category.entity.Category;
 import com.eunsun.mssproductapi.domain.category.service.CategoryService;
@@ -45,7 +45,7 @@ public class PriceServiceImpl implements PriceService{
     @Cacheable(value = "brandLowestPrices", key = "'brdLowestKey'")
     public LowestPriceBrandResponse getBrandLowestPrices() {
         LowestPriceBrandInterface lowestPriceBrandInterface = productRepository.findLowestPriceBrandWithTotal()
-                .orElseThrow(() -> new LowestPriceBrandNotFoundException(ExceptionMessage.NOT_FOUND_LOWEST_BRAND));
+                .orElseThrow(() -> new LowestPriceBrandNotFoundException(ErrorMessages.NOT_FOUND_LOWEST_BRAND));
 
         List<CategoryPrice> categoryPrices = productRepository.findCategoryMinPricesByBrand(lowestPriceBrandInterface.getBrandId());
         return new LowestPriceBrandResponse(lowestPriceBrandInterface.getBrandNm(), categoryPrices, lowestPriceBrandInterface.getTotalPrice());

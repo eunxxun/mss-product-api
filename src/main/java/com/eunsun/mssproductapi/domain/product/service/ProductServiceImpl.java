@@ -3,7 +3,7 @@ package com.eunsun.mssproductapi.domain.product.service;
 import com.eunsun.mssproductapi.api.v1.product.dto.ProductRequest;
 import com.eunsun.mssproductapi.api.v1.product.dto.ProductResponse;
 import com.eunsun.mssproductapi.common.exception.DuplicationException;
-import com.eunsun.mssproductapi.common.exception.ExceptionMessage;
+import com.eunsun.mssproductapi.common.exception.ErrorMessages;
 import com.eunsun.mssproductapi.domain.brand.entity.Brand;
 import com.eunsun.mssproductapi.domain.brand.service.BrandService;
 import com.eunsun.mssproductapi.domain.category.entity.Category;
@@ -42,7 +42,7 @@ public class ProductServiceImpl implements ProductService {
         Category category = categoryService.findCategoryById(productRequest.categoryId());
 
         if (isExistEqualProduct(brand, category, productRequest)) {
-            throw new DuplicationException(ExceptionMessage.EXISTS_PRODUCT);
+            throw new DuplicationException(ErrorMessages.EXISTS_PRODUCT);
         }
         Product product = productRepository.save(ProductMapper.toEntity(productRequest, brand, category));
         return ProductMapper.toResponse(product);
@@ -68,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
         Category category = product.getCategory();
 
         if (isExistEqualProduct(brand, category, productRequest)) {
-            throw new DuplicationException(ExceptionMessage.EXISTS_PRODUCT);
+            throw new DuplicationException(ErrorMessages.EXISTS_PRODUCT);
         }
 
         product.update(brand, category, productRequest.productNm(), productRequest.price());
@@ -99,12 +99,12 @@ public class ProductServiceImpl implements ProductService {
 
     private Product findById(Long id) {
         return productRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(ExceptionMessage.NOT_FOUND_PRODUCT));
+                () -> new EntityNotFoundException(ErrorMessages.NOT_FOUND_PRODUCT));
     }
 
     private Product findWithBrandAndCategoryById(Long id) {
         return productRepository.findWithBrandAndCategoryById(id).orElseThrow(
-                () -> new EntityNotFoundException(ExceptionMessage.NOT_FOUND_PRODUCT));
+                () -> new EntityNotFoundException(ErrorMessages.NOT_FOUND_PRODUCT));
     }
 
     private boolean isExistEqualProduct(Brand brand, Category category, ProductRequest request) {

@@ -53,6 +53,8 @@ User Name : sa
   - 가격 조회 API 호출시 캐시를 적용하고 상품 생성,수정,삭제시에 캐시를 무효화하여 최신데이터를 유지했습니다.
   - CacheLoggingAspect를 추가하여 캐시가 추가되고 무효화되는 상태를 로깅했습니다.
 
+---
+
 ## 구현 설명
 ### 1. **GET /api/v1/prices/categories/lowest**
 카테고리 별 최저가격 브랜드와 상품 가격, 총액 조회
@@ -254,7 +256,35 @@ User Name : sa
 **Response**:
 - Status: `204 No Content`
 
----
-
 ## Error Handling
+- API 호출 중 발생할 수 있는 다양한 예외 상황에 대해 일관된 방식으로 처리하기 위해 @ControllerAdvice를 사용한 전역 예외 처리 방식을 적용하였습니다.
+- ErrorMessages 클래스를 통해 에러 메시지를 일관되게 관리했습니다. 이 클래스는 각 예외에 맞는 에러 메시지를 상수로 정의하여 코드 내에서 재사용할 수 있도록 했고, 예외 발생 시 해당 메시지를 반환합니다.
 
+### Example1: 없는 브랜드 id 삭제
+
+**Request**:
+- Method: `DELETE`
+- Endpoint: `/api/v1/brands/99`
+
+**Response**
+- Status: `404 Not Found`
+- Body:
+  ```json
+  {
+    "message": "브랜드를 찾을 수 없습니다."
+  }
+  ```
+### Example2: 없는 카테고리명으로 range 조회
+
+**Request**:
+- Method: `GET`
+- Endpoint: `/api/v1/prices/category/휴대폰/range`
+
+**Response**:
+- Status: `404 Not Found`
+- Body:
+  ```json
+  {
+    "message": "카테고리를 찾을 수 없습니다."
+  }
+  ```

@@ -3,7 +3,7 @@ package com.eunsun.mssproductapi.domain.brand.service;
 import com.eunsun.mssproductapi.api.v1.brand.dto.BrandRequest;
 import com.eunsun.mssproductapi.api.v1.brand.dto.BrandResponse;
 import com.eunsun.mssproductapi.common.exception.DuplicationException;
-import com.eunsun.mssproductapi.common.exception.ExceptionMessage;
+import com.eunsun.mssproductapi.common.exception.ErrorMessages;
 import com.eunsun.mssproductapi.domain.brand.entity.Brand;
 import com.eunsun.mssproductapi.domain.brand.mapper.BrandMapper;
 import com.eunsun.mssproductapi.domain.brand.repository.BrandRepository;
@@ -64,7 +64,7 @@ class BrandServiceTest {
 
         // when & then
         DuplicationException exception = assertThrows(DuplicationException.class, () -> brandService.create(brandRequest));
-        assertEquals(ExceptionMessage.EXISTS_BRAND_NM + "중복브랜드", exception.getMessage());
+        assertEquals(ErrorMessages.EXISTS_BRAND_NM + "중복브랜드", exception.getMessage());
         verify(brandRepository, times(1)).existsByBrandNm(anyString());
     }
 
@@ -97,7 +97,7 @@ class BrandServiceTest {
 
         // when & then
         DuplicationException exception = assertThrows(DuplicationException.class, () -> brandService.update(brandId, brandRequest));
-        assertEquals(ExceptionMessage.EXISTS_BRAND_NM + "중복브랜드", exception.getMessage());
+        assertEquals(ErrorMessages.EXISTS_BRAND_NM + "중복브랜드", exception.getMessage());
         verify(brandRepository, times(1)).existsByBrandNm(anyString());
     }
 
@@ -140,7 +140,7 @@ class BrandServiceTest {
 
         // when & then
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> brandService.findById(brandId));
-        assertEquals(ExceptionMessage.NOT_FOUND_BRAND, exception.getMessage());
+        assertEquals(ErrorMessages.NOT_FOUND_BRAND, exception.getMessage());
         verify(brandRepository, times(1)).findById(brandId);
     }
 

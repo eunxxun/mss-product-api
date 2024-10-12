@@ -15,24 +15,23 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity<String> handleEntityNotFoundException(EntityNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    public ResponseEntity<ErrorResponse> handleEntityNotFoundException(EntityNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(ex.getMessage()));
     }
 
     @ExceptionHandler(DuplicationException.class)
-    public ResponseEntity<String> handleDuplicationException(DuplicationException ex) {
-        return ResponseEntity.status(HttpStatus.CONFLICT).body(ex.getMessage());
+    public ResponseEntity<ErrorResponse> handleDuplicationException(DuplicationException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(ex.getMessage()));
     }
 
     @ExceptionHandler(LowestPriceBrandNotFoundException.class)
-    public ResponseEntity<String> handleLowestPriceBrandNotFoundException(LowestPriceBrandNotFoundException ex) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(ex.getMessage());
+    public ResponseEntity<ErrorResponse> handleLowestPriceBrandNotFoundException(LowestPriceBrandNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(ex.getMessage()));
     }
 
     @ExceptionHandler(MissingPathVariableException.class)
-    public ResponseEntity<String> handleMissingPathVariable(MissingPathVariableException ex) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                .body("Required path variable is missing: " + ex.getVariableName());
+    public ResponseEntity<ErrorResponse> handleMissingPathVariable(MissingPathVariableException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorResponse(ErrorMessages.NULL_PATH_VARIABLE + ex.getVariableName()));
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

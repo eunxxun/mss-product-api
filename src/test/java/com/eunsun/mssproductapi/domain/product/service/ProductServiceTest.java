@@ -3,7 +3,7 @@ package com.eunsun.mssproductapi.domain.product.service;
 import com.eunsun.mssproductapi.api.v1.product.dto.ProductRequest;
 import com.eunsun.mssproductapi.api.v1.product.dto.ProductResponse;
 import com.eunsun.mssproductapi.common.exception.DuplicationException;
-import com.eunsun.mssproductapi.common.exception.ExceptionMessage;
+import com.eunsun.mssproductapi.common.exception.ErrorMessages;
 import com.eunsun.mssproductapi.domain.brand.entity.Brand;
 import com.eunsun.mssproductapi.domain.brand.service.BrandService;
 import com.eunsun.mssproductapi.domain.category.entity.Category;
@@ -84,7 +84,7 @@ class ProductServiceTest {
 
         // when & then
         DuplicationException exception = assertThrows(DuplicationException.class, () -> productService.create(productRequest));
-        assertEquals(ExceptionMessage.EXISTS_PRODUCT, exception.getMessage());
+        assertEquals(ErrorMessages.EXISTS_PRODUCT, exception.getMessage());
         verify(productRepository, times(1)).existsByBrandAndCategoryAndProductNmAndPrice(brand, category, productRequest.productNm(), productRequest.price());
     }
 
@@ -123,7 +123,7 @@ class ProductServiceTest {
 
         // when & then
         DuplicationException exception = assertThrows(DuplicationException.class, () -> productService.update(productId, productRequest));
-        assertEquals(ExceptionMessage.EXISTS_PRODUCT, exception.getMessage());
+        assertEquals(ErrorMessages.EXISTS_PRODUCT, exception.getMessage());
         verify(productRepository, times(1)).existsByBrandAndCategoryAndProductNmAndPrice(brand, category, productRequest.productNm(), productRequest.price());
     }
 

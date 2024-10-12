@@ -5,7 +5,7 @@ import com.eunsun.mssproductapi.api.v1.brand.dto.BrandResponse;
 import com.eunsun.mssproductapi.domain.brand.entity.Brand;
 import com.eunsun.mssproductapi.domain.brand.mapper.BrandMapper;
 import com.eunsun.mssproductapi.domain.brand.repository.BrandRepository;
-import com.eunsun.mssproductapi.common.exception.ExceptionMessage;
+import com.eunsun.mssproductapi.common.exception.ErrorMessages;
 import com.eunsun.mssproductapi.common.exception.DuplicationException;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
@@ -67,12 +67,12 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public Brand findById(Long id) {
         return brandRepository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException(ExceptionMessage.NOT_FOUND_BRAND));
+                () -> new EntityNotFoundException(ErrorMessages.NOT_FOUND_BRAND));
     }
 
     private void validateUniqueBrandNm(String brandNm) {
         if (brandRepository.existsByBrandNm(brandNm)) {
-            throw new DuplicationException(ExceptionMessage.EXISTS_BRAND_NM + brandNm);
+            throw new DuplicationException(ErrorMessages.EXISTS_BRAND_NM + brandNm);
         }
     }
 }

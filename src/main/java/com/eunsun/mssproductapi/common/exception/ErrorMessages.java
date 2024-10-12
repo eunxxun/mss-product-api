@@ -3,7 +3,7 @@ package com.eunsun.mssproductapi.common.exception;
 import lombok.Getter;
 
 @Getter
-public class ExceptionMessage {
+public class ErrorMessages {
     // Not Found
     final public static String NOT_FOUND_BRAND = "브랜드를 찾을 수 없습니다.";
     final public static String NOT_FOUND_CATEGORY = "카테고리를 찾을 수 없습니다.";
@@ -25,4 +25,6 @@ public class ExceptionMessage {
     final public static String MAX_LEN_PRODUCT_NM = "상품명은 최대255자 입니다.";
     final public static String NULL_PRICE = "가격을 입력해주세요.";
     final public static String MIN_PRICE = "가격을 1원이상 입력해주세요.";
+
+    final public static String NULL_PATH_VARIABLE = "경로변수는 null 일 수 없습니다: " ;
 }

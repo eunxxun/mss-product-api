@@ -1,7 +1,7 @@
 package com.eunsun.mssproductapi.domain.price.service;
 
 import com.eunsun.mssproductapi.api.v1.price.dto.*;
-import com.eunsun.mssproductapi.common.exception.ExceptionMessage;
+import com.eunsun.mssproductapi.common.exception.ErrorMessages;
 import com.eunsun.mssproductapi.common.exception.LowestPriceBrandNotFoundException;
 import com.eunsun.mssproductapi.domain.category.entity.Category;
 import com.eunsun.mssproductapi.domain.category.service.CategoryService;
@@ -88,7 +88,7 @@ class PriceServiceTest {
         LowestPriceBrandNotFoundException exception = assertThrows(LowestPriceBrandNotFoundException.class, () -> {
             priceService.getBrandLowestPrices();
         });
-        assertEquals(ExceptionMessage.NOT_FOUND_LOWEST_BRAND, exception.getMessage());
+        assertEquals(ErrorMessages.NOT_FOUND_LOWEST_BRAND, exception.getMessage());
         verify(productRepository, times(1)).findLowestPriceBrandWithTotal();
     }
 
@@ -118,13 +118,13 @@ class PriceServiceTest {
     void getCategoryPriceRangeByNameNotFoundExceptionTest() {
         // given
         String categoryNm = "노트북"; //없는 카테고리
-        when(categoryService.findCategoryByName(anyString())).thenThrow(new EntityNotFoundException(ExceptionMessage.NOT_FOUND_CATEGORY));
+        when(categoryService.findCategoryByName(anyString())).thenThrow(new EntityNotFoundException(ErrorMessages.NOT_FOUND_CATEGORY));
 
         // when & then
         EntityNotFoundException exception = assertThrows(EntityNotFoundException.class, () -> {
             priceService.getCategoryPriceRangeByName(categoryNm);
         });
-        assertEquals(ExceptionMessage.NOT_FOUND_CATEGORY, exception.getMessage());
+        assertEquals(ErrorMessages.NOT_FOUND_CATEGORY, exception.getMessage());
         verify(categoryService, times(1)).findCategoryByName(anyString());
     }
 
