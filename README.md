@@ -46,8 +46,8 @@ User Name : sa
     ```json
     {
       "lowestPriceCategoryInterfaceList": [
-        {"brandNm": "무신사 스탠다드", "price": 9000, "categoryNm": "스니커즈"},
-        {"brandNm": "무신사 스탠다드", "price": 2000, "categoryNm": "가방"},
+        {"brandNm": "스탠다드", "price": 9000, "categoryNm": "스니커즈"},
+        {"brandNm": "스탠다드", "price": 2000, "categoryNm": "가방"},
         {"brandNm": "예일", "price": 10000, "categoryNm": "상의"},
         {"brandNm": "아디다스", "price": 3000, "categoryNm": "바지"},
         {"brandNm": "아디다스", "price": 1500, "categoryNm": "모자"},
@@ -70,7 +70,7 @@ User Name : sa
 - Body:
   ```json
   {
-    "brandNm": "무신사 스탠다드",
+    "brandNm": "스탠다드",
     "categories": [
       {"categoryNm": "가방", "price": 2000},
       {"categoryNm": "모자", "price": 1700},
@@ -187,7 +187,7 @@ User Name : sa
   ```json
   {
     "id": 74,
-    "brandNm": "무신사 스탠다드",
+    "brandNm": "스탠다드",
     "CategoryNm": "상의",
     "ProductNm": "스트라이프 티셔츠",
     "price": 50000
@@ -216,7 +216,7 @@ User Name : sa
   ```json
   {
     "id": 74,
-    "brandNm": "무신사 스탠다드",
+    "brandNm": "스탠다드",
     "CategoryNm": "상의",
     "ProductNm": "스트라이프 셔츠",
     "price": 70000

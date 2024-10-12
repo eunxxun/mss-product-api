@@ -61,7 +61,7 @@ insert into CATEGORY values (7, '양말', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP
 insert into CATEGORY values (8, '액세서리', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
 
 -- BRAND 데이터 추가
-insert into BRAND values (1, '무신사 스탠다드', false, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
+insert into BRAND values (1, '스탠다드', false, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
 insert into BRAND values (2, '디즈이즈네버댓', false, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
 insert into BRAND values (3, '예일', false, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
 insert into BRAND values (4, '아디다스', false, CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());
