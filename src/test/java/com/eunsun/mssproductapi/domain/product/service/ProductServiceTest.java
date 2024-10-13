@@ -93,12 +93,8 @@ class ProductServiceTest {
     void updateProductTest() {
         // given
         ProductRequest productRequest = new ProductRequest(2L, 2L, "수정상품", new BigDecimal("15000"));
-        Brand brand = new Brand(2L, "수정브랜드", false);
-        Category category = new Category(2L, "수정카테고리");
 
-        when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
-        when(brandService.findById(anyLong())).thenReturn(brand);
-        when(categoryService.findCategoryById(anyLong())).thenReturn(category);
+        when(productRepository.findWithBrandAndCategoryById(anyLong())).thenReturn(Optional.of(product));
         when(productRepository.save(any(Product.class))).thenReturn(product);
 
         // when
@@ -116,9 +112,7 @@ class ProductServiceTest {
         // given
         ProductRequest productRequest = new ProductRequest(1L, 1L, "신규상품", new BigDecimal("10000"));
 
-        when(productRepository.findById(anyLong())).thenReturn(Optional.of(product));
-        when(brandService.findById(anyLong())).thenReturn(brand);
-        when(categoryService.findCategoryById(anyLong())).thenReturn(category);
+        when(productRepository.findWithBrandAndCategoryById(anyLong())).thenReturn(Optional.of(product));
         when(productRepository.existsByBrandAndCategoryAndProductNmAndPrice(brand, category, productRequest.productNm(), productRequest.price())).thenReturn(true);
 
         // when & then

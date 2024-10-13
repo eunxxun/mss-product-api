@@ -32,11 +32,6 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     @Transactional
-    @Caching(evict = {
-            @CacheEvict(value = "categoryLowestPrices", key = "'ctgLowestKey'"),
-            @CacheEvict(value = "brandLowestPrices", key = "'brdLowestKey'"),
-            @CacheEvict(value = "categoryRangePrices", key = "#productRequest.categoryId()")
-    })
     public ProductResponse create(ProductRequest productRequest) {
         Brand brand = brandService.findById(productRequest.brandId());
         Category category = categoryService.findCategoryById(productRequest.categoryId());
@@ -56,11 +51,6 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     @Transactional
-    @Caching(evict = {
-            @CacheEvict(value = "categoryLowestPrices", key = "'ctgLowestKey'"),
-            @CacheEvict(value = "brandLowestPrices", key = "'brdLowestKey'"),
-            @CacheEvict(value = "categoryRangePrices", key = "#productRequest.categoryId()")
-    })
     public ProductResponse update(Long id, ProductRequest productRequest) {
         Product product = findWithBrandAndCategoryById(id);
 
@@ -82,11 +72,6 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     @Transactional
-    @Caching(evict = {
-            @CacheEvict(value = "categoryLowestPrices", key = "'ctgLowestKey'"),
-            @CacheEvict(value = "brandLowestPrices", key = "'brdLowestKey'"),
-            @CacheEvict(value = "categoryRangePrices", allEntries = true)
-    })
     public void delete(Long id) {
         Product product = findById(id);
         productRepository.delete(product);

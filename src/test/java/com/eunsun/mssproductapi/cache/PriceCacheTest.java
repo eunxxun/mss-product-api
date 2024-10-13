@@ -38,6 +38,7 @@ public class PriceCacheTest {
 
     @Test
     @DisplayName("categoryLowestPrices 캐시확인")
+    @Deprecated
     void getCategoryLowestPricesCacheableTest() {
         // 최초 데이터 조회(캐시x)
         LowestPriceCategoryResponse firstResponse = priceService.getCategoryLowestPrices();
@@ -56,6 +57,7 @@ public class PriceCacheTest {
 
     @Test
     @DisplayName("categoryLowestPrices 캐시무효화 확인")
+    @Deprecated
     void getCategoryLowestPricesCacheEvictTest() {
         // 캐시 저장
         priceService.getCategoryLowestPrices();

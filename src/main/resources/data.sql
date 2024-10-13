@@ -41,14 +41,10 @@ CREATE TABLE PRODUCT
     FOREIGN KEY (category_id) REFERENCES CATEGORY (id)
 );
 
-CREATE INDEX idx_product_brand_id ON PRODUCT (brand_id);
-CREATE INDEX idx_product_category_id ON PRODUCT (category_id);
-CREATE INDEX idx_product_price ON PRODUCT (price);
-CREATE INDEX idx_product_del_yn ON PRODUCT (del_yn);
-
---카테고리별 최저가 상품 조회를 위해 인덱스 추가
-CREATE INDEX idx_product_category_price_delyn ON PRODUCT (category_id, price, del_yn);
 CREATE INDEX idx_product_brand_category_price ON PRODUCT (brand_id, category_id, price);
+CREATE INDEX idx_product_del_yn ON PRODUCT (del_yn);
+CREATE INDEX idx_product_category_price ON PRODUCT (category_id, price);
+CREATE INDEX idx_product_brand_del_category_price ON PRODUCT (brand_id, del_yn, category_id, price);
 
 -- CATEGORY 데이터 추가
 insert into CATEGORY values (1, '상의', CURRENT_TIMESTAMP(), CURRENT_TIMESTAMP());

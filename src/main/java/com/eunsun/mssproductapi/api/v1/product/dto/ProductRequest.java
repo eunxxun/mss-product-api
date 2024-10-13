@@ -19,6 +19,6 @@ public record ProductRequest(
         String productNm,
 
         @NotNull(message = ErrorMessages.NULL_PRICE)
-        @DecimalMin(value = "1.0", inclusive = false, message = ErrorMessages.MIN_PRICE)
+        @DecimalMin(value = "0.0", inclusive = false, message = ErrorMessages.MIN_PRICE)
         BigDecimal price) {
 }

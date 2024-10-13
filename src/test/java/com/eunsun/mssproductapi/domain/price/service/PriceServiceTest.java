@@ -30,9 +30,6 @@ class PriceServiceTest {
     @Mock
     private CategoryService categoryService;
 
-    @Mock
-    private CategoryPriceCacheHandler categoryPriceCacheHandler;
-
     @InjectMocks
     private PriceServiceImpl priceService;
 
@@ -96,12 +93,12 @@ class PriceServiceTest {
     @DisplayName("특정 카테고리에서 최저가 브랜드, 최고가 브랜드 조회하고 해당 브랜드 상품의 가격 조회하는 테스트")
     void getCategoryPriceRangeByNameTest() {
         // given
+        Long categoryId = 1L;
         String categoryNm = "상의";
-        Category category = new Category(1L, categoryNm);
-        CategoryPriceRangeResponse categoryPriceRangeResponse = new CategoryPriceRangeResponse(categoryNm, List.of(), List.of());
-
+        Category category = new Category(categoryId, categoryNm);
+        BrandPriceRange brandPriceRange = createBrandPriceRange();
         when(categoryService.findCategoryByName(anyString())).thenReturn(category);
-        when(categoryPriceCacheHandler.getCategoryPriceRange(any(Category.class))).thenReturn(categoryPriceRangeResponse);
+        when(productRepository.findBrandPriceRangeByCategoryId(categoryId)).thenReturn(brandPriceRange);
 
         // when
         CategoryPriceRangeResponse response = priceService.getCategoryPriceRangeByName(categoryNm);
@@ -110,7 +107,6 @@ class PriceServiceTest {
         assertNotNull(response);
         assertEquals(categoryNm, response.categoryNm());
         verify(categoryService, times(1)).findCategoryByName(anyString());
-        verify(categoryPriceCacheHandler, times(1)).getCategoryPriceRange(any(Category.class));
     }
 
     @Test
@@ -180,6 +176,30 @@ class PriceServiceTest {
             @Override
             public BigDecimal getTotalPrice() {
                 return new BigDecimal("30000");
+            }
+        };
+    }
+
+    private BrandPriceRange createBrandPriceRange() {
+        return new BrandPriceRange() {
+            @Override
+            public String getLowestPriceBrand() {
+                return "브랜드1";
+            }
+
+            @Override
+            public BigDecimal getLowestPrice() {
+                return new BigDecimal(1000);
+            }
+
+            @Override
+            public String getHighestPriceBrand() {
+                return "브랜드2";
+            }
+
+            @Override
+            public BigDecimal getHighestPrice() {
+                return new BigDecimal(1000000);
             }
         };
     }

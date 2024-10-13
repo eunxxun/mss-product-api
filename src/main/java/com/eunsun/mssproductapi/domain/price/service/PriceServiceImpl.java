@@ -7,7 +7,6 @@ import com.eunsun.mssproductapi.domain.category.entity.Category;
 import com.eunsun.mssproductapi.domain.category.service.CategoryService;
 import com.eunsun.mssproductapi.domain.price.mapper.PriceMapper;
 import com.eunsun.mssproductapi.domain.price.repository.ProductNativeRepository;
-import org.springframework.cache.annotation.Cacheable;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,14 +20,12 @@ import java.util.List;
 public class PriceServiceImpl implements PriceService{
     private final ProductNativeRepository productRepository;
     private final CategoryService categoryService;
-    private final CategoryPriceCacheHandler categoryPriceCacheHandler;
 
     /**
      * 카테고리 별로 최저가격인 브랜드와 상품의 가격을 조회하고 총액이 얼마인지 조회
      * @return CategoryMinPriceResponse
      */
     @Override
-    @Cacheable(value = "categoryLowestPrices", key = "'ctgLowestKey'")
     public LowestPriceCategoryResponse getCategoryLowestPrices() {
         List<LowestPriceCategoryInterface> lowestPriceCategoryInterfaceList = productRepository.findCategoryMinPrices();
         BigDecimal totalPrice = lowestPriceCategoryInterfaceList.stream()
@@ -42,7 +39,6 @@ public class PriceServiceImpl implements PriceService{
      * @return BrandMinPriceResponse
      */
     @Override
-    @Cacheable(value = "brandLowestPrices", key = "'brdLowestKey'")
     public LowestPriceBrandResponse getBrandLowestPrices() {
         LowestPriceBrandInterface lowestPriceBrandInterface = productRepository.findLowestPriceBrandWithTotal()
                 .orElseThrow(() -> new LowestPriceBrandNotFoundException(ErrorMessages.NOT_FOUND_LOWEST_BRAND));
@@ -59,7 +55,12 @@ public class PriceServiceImpl implements PriceService{
     @Override
     public CategoryPriceRangeResponse getCategoryPriceRangeByName(String categoryNm) {
         Category category = categoryService.findCategoryByName(categoryNm);
-        return categoryPriceCacheHandler.getCategoryPriceRange(category);
+
+        BrandPriceRange brandPriceRange = productRepository.findBrandPriceRangeByCategoryId(category.getId());
+        List<BrandPrice> lowestPrices = List.of(new BrandPrice(brandPriceRange.getLowestPriceBrand(), brandPriceRange.getLowestPrice()));
+        List<BrandPrice> highestPrices = List.of(new BrandPrice(brandPriceRange.getHighestPriceBrand(), brandPriceRange.getHighestPrice()));
+
+        return new CategoryPriceRangeResponse(category.getCategoryNm(), lowestPrices, highestPrices);
     }
 
 }
